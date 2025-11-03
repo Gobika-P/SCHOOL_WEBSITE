@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sunrise Public School — Demo</title>
+  <meta name="description" content="School website demo — single file HTML/CSS/JS" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --accent:#5b21b6; --muted:#6b7280; --bg:#f8fafc; --card:#ffffff;
+      --radius:12px; --shadow: 0 6px 20px rgba(16,24,40,0.08);
+      font-family: Inter, system-ui, Arial, sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:#0f172a;line-height:1.5}
+    .container{max-width:1100px;margin:0 auto;padding:20px}
+    header.site-header{background:#fff;border-bottom:1px solid #e6edf3;position:sticky;top:0;z-index:60}
+    .header-inner{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:46px;height:46px;border-radius:10px;background:var(--accent);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700}
+    .brand-text h1{margin:0;font-size:16px}
+    .brand-text small{color:var(--muted);font-size:12px}
+    .nav-links{list-style:none;margin:0;padding:0;display:flex;gap:12px;align-items:center}
+    .nav-links a{color:var(--muted);text-decoration:none;padding:8px;border-radius:8px}
+    .nav-links a:hover{color:var(--accent);background:#f3eefc}
+    #nav-toggle{display:none;border:0;background:transparent;font-size:22px}
+    main{padding-bottom:60px}
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:24px;align-items:center;padding:36px 0}
+    .hero h2{font-size:28px;margin:0 0 12px}
+    .hero p{color:var(--muted);margin:0}
+    .hero img{width:100%;height:260px;object-fit:cover;border-radius:12px;box-shadow:var(--shadow)}
+    .btn{display:inline-block;padding:10px 16px;border-radius:10px;text-decoration:none;cursor:pointer}
+    .btn.primary{background:var(--accent);color:#fff;border:0}
+    .btn.ghost{background:transparent;border:1px solid var(--accent);color:var(--accent)}
+    .section{padding:28px 0}
+    .section-header h3{margin:0;font-size:20px}
+    .section-header p{color:var(--muted);margin:6px 0 0}
+    .grid{display:grid;gap:16px}
+    .grid-3{grid-template-columns:repeat(3,1fr)}
+    .card{background:var(--card);padding:18px;border-radius:12px;box-shadow:var(--shadow)}
+    .faculty-wrap{display:flex;align-items:center;gap:12px;margin-top:14px}
+    .faculty-list{list-style:none;margin:0;padding:0;display:flex;gap:12px;overflow:hidden;width:100%}
+    .faculty-card{min-width:220px;background:var(--card);padding:14px;border-radius:12px;box-shadow:var(--shadow);display:flex;gap:12px;align-items:center}
+    .avatar{width:64px;height:64px;border-radius:10px;background:#e6eefc;overflow:hidden;flex-shrink:0}
+    .avatar img{width:100%;height:100%;object-fit:cover}
+    .carousel-btn{background:#fff;border:1px solid #eef0f6;padding:8px 10px;border-radius:8px;cursor:pointer;box-shadow:0 2px 6px rgba(2,6,23,0.06)}
+    .events-controls{margin-top:12px;margin-bottom:8px}
+    .events-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+    .event-card{background:var(--card);padding:12px;border-radius:12px;box-shadow:var(--shadow)}
+    .event-meta{color:var(--muted);font-size:12px}
+    .gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+    .gallery-grid img{width:100%;height:120px;object-fit:cover;border-radius:8px;cursor:pointer}
+    .modal{position:fixed;inset:0;background:rgba(2,6,23,0.6);display:flex;align-items:center;justify-content:center;padding:20px;z-index:120}
+    .modal-inner{background:#fff;padding:14px;border-radius:12px;max-width:900px;width:100%;box-shadow:0 10px 40px rgba(2,6,23,0.4)}
+    .modal img{width:100%;height:60vh;object-fit:cover;border-radius:8px}
+    .modal-close{position:absolute;right:18px;top:14px;background:#fff;border:0;padding:8px;border-radius:8px;cursor:pointer}
+    .contact-form{display:grid;grid-template-columns:1fr 1fr;gap:12px;background:var(--card);padding:14px;border-radius:12px;box-shadow:var(--shadow);margin-top:12px}
+    .contact-form input,.contact-form textarea{width:100%;padding:10px;border:1px solid #e6edf3;border-radius:8px}
+    .contact-form textarea{grid-column:1/3}
+    .toast{position:fixed;right:20px;bottom:20px;background:#111;color:#fff;padding:10px 14px;border-radius:8px;box-shadow:0 6px 26px rgba(2,6,23,0.4);z-index:200}
+    .admin-panel{margin-top:14px;background:#fff;padding:12px;border-radius:12px;box-shadow:var(--shadow)}
+    .admin-row{display:flex;gap:8px;margin-top:8px}
+    .admin-row input,.admin-row select{padding:8px;border-radius:8px;border:1px solid #e6edf3}
+    .admin-actions{display:flex;gap:8px;margin-top:8px}
+    .muted{color:var(--muted);font-size:13px}
+    footer{padding:18px 0;background:#fff;border-top:1px solid #eef2ff;margin-top:28px}
+    @media (max-width:900px){
+      .hero{grid-template-columns:1fr;gap:16px}
+      .grid-3{grid-template-columns:1fr}
+      .gallery-grid{grid-template-columns:repeat(2,1fr)}
+      .contact-form{grid-template-columns:1fr}
+      #nav-toggle{display:inline-block}
+      .nav-links{display:none;position:absolute;top:66px;right:16px;background:#fff;padding:12px;border-radius:10px;box-shadow:var(--shadow);flex-direction:column}
+      .nav-links.show{display:flex}
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand" role="banner">
+        <div class="logo">S</div>
+        <div class="brand-text">
+          <h1>Sunrise Public School</h1>
+          <small>Inspiring lifelong learners</small>
+        </div>
+      </div>
+
+      <nav aria-label="Main navigation">
+        <button id="nav-toggle" aria-label="Toggle navigation">☰</button>
+        <ul id="nav-links" class="nav-links">
+          <li><a href="#academics">Academics</a></li>
+          <li><a href="#faculty">Faculty</a></li>
+          <li><a href="#events">Events</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a id="admin-toggle" href="#admin">Admin</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Hero -->
+    <section id="hero" class="hero">
+      <div class="hero-left">
+        <h2>Nurturing curious minds — preparing future leaders</h2>
+        <p>Modern learning environment, dedicated faculty, and vibrant extracurriculars. Admissions open for 2026.</p>
+        <div style="margin-top:14px">
+          <button class="btn primary" onclick="document.querySelector('#contact').scrollIntoView({behavior:'smooth'})">Enquire Now</button>
+          <button class="btn ghost" onclick="document.querySelector('#events').scrollIntoView({behavior:'smooth'})" style="margin-left:8px">Upcoming Events</button>
+        </div>
+      </div>
+      <div class="hero-right">
+        <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=1a0a4d1b3f34c2b20ab6e3c7a5f1e223" alt="School building" />
+      </div>
+    </section>
+
+    <!-- Academics -->
+    <section id="academics" class="section">
+      <header class="section-header">
+        <h3>Academics</h3>
+        <p class="muted">Holistic curriculum & student support — CBSE-aligned, project-based learning, and remediation programmes.</p>
+      </header>
+      <div class="grid grid-3" style="margin-top:12px">
+        <article class="card"><h4>Curriculum</h4><p class="muted">Robust curriculum with continuous assessment and experiential learning.</p></article>
+        <article class="card"><h4>Co-curricular</h4><p class="muted">Music, arts, sports, robotics, debate and many clubs.</p></article>
+        <article class="card"><h4>Support</h4><p class="muted">Counseling, mentorship, remedial classes and special-needs assistance.</p></article>
+      </div>
+    </section>
+
+    <!-- Faculty -->
+    <section id="faculty" class="section">
+      <header class="section-header">
+        <h3>Faculty</h3>
+        <p class="muted">Experienced and caring educators who focus on growth and wellbeing.</p>
+      </header>
+
+      <div class="faculty-wrap">
+        <button id="prev-f" class="carousel-btn" aria-label="Previous">‹</button>
+        <ul id="faculty-list" class="faculty-list" role="list"></ul>
+        <button id="next-f" class="carousel-btn" aria-label="Next">›</button>
+      </div>
+
+      <div class="admin-hint muted">Tip: Toggle Admin to edit faculty/events (edits saved locally).</div>
+    </section>
+
+    <!-- Events -->
+    <section id="events" class="section">
+      <header class="section-header">
+        <h3>Events</h3>
+        <p class="muted">We celebrate learning, talent and community throughout the year.</p>
+      </header>
+
+      <div class="events-controls">
+        <label class="muted">Filter:
+          <select id="event-filter">
+            <option value="all">All</option>
+            <option value="sports">Sports</option>
+            <option value="science">Science</option>
+            <option value="cultural">Cultural</option>
+          </select>
+        </label>
+      </div>
+
+      <ul id="events-list" class="events-list" role="list"></ul>
+    </section>
+
+    <!-- Gallery -->
+    <section id="gallery" class="section">
+      <header class="section-header">
+        <h3>Gallery</h3>
+        <p class="muted">Moments from school life — click to view larger.</p>
+      </header>
+
+      <div id="gallery-grid" class="gallery-grid"></div>
+    </section>
+
+    <!-- Gallery modal (hidden by default) -->
+    <div id="gallery-modal" class="modal" style="display:none" aria-hidden="true">
+      <div class="modal-inner">
+        <button id="modal-close" class="modal-close">✕</button>
+        <img id="modal-img" src="" alt="Gallery large" />
+      </div>
+    </div>
+
+    <!-- Contact -->
+    <section id="contact" class="section">
+      <header class="section-header">
+        <h3>Contact</h3>
+        <p class="muted">Get in touch with admissions or the school office.</p>
+      </header>
+
+      <form id="contact-form" class="contact-form" onsubmit="return false">
+        <input id="contact-name" placeholder="Your name" required />
+        <input id="contact-email" type="email" placeholder="Your email" required />
+        <input id="contact-subject" placeholder="Subject" />
+        <input id="contact-phone" placeholder="Phone (optional)" />
+        <textarea id="contact-message" rows="5" placeholder="Message" required></textarea>
+        <div style="display:flex;justify-content:flex-end;align-items:center;gap:8px">
+          <button id="contact-send" class="btn primary">Send Message</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Admin -->
+    <section id="admin" class="section" style="display:none">
+      <div class="admin-panel">
+        <h4>Admin — Edit Faculty</h4>
+        <div id="faculty-admin-list"></div>
+        <div class="admin-row">
+          <input id="af-name" placeholder="Name" />
+          <input id="af-role" placeholder="Role" />
+          <input id="af-dept" placeholder="Dept" />
+        </div>
+        <div class="admin-row">
+          <input id="af-photo" placeholder="Photo URL (optional)" />
+          <button id="af-add" class="btn primary">Add Faculty</button>
+        </div>
+
+        <hr style="margin:12px 0;border:none;border-top:1px dashed #eef2ff"/>
+
+        <h4>Admin — Events</h4>
+        <div id="events-admin-list"></div>
+        <div class="admin-row">
+          <input id="ae-title" placeholder="Title" />
+          <input id="ae-date" placeholder="Date (YYYY-MM-DD)" />
+          <select id="ae-type"><option value="sports">Sports</option><option value="science">Science</option><option value="cultural">Cultural</option></select>
+        </div>
+        <div class="admin-row">
+          <input id="ae-img" placeholder="Image URL (optional)" />
+          <button id="ae-add" class="btn primary">Add Event</button>
+        </div>
+      </div>
+    </section>
+
+    <footer style="margin-top:28px">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+        <div>© <span id="year"></span> Sunrise Public School — All rights reserved.</div>
+        <div class="muted">Address: 123 School Lane, City — Phone: +91 98765 43210</div>
+      </div>
+    </footer>
+  </main>
+
+  <div id="toast" style="display:none" class="toast"></div>
+
+  <script>
+    /* Single-file school website (HTML/CSS/JS)
+       - Faculty carousel
+       - Events with filter
+       - Gallery modal
+       - Contact form (localStorage)
+       - Admin mode (localStorage)
+    */
+    const DEFAULT_DATA = {
+      faculty: [
+        {id:1,name:'Dr. Asha Kumar',role:'Principal',dept:'Administration',photo:'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=5a8d5b5a2f7a6a9f6b2a2f3b6c2f9e1b'},
+        {id:2,name:'Mr. Rajesh Iyer',role:'Math Teacher',dept:'Mathematics',photo:'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=62e27b4b8e6a0d9f2f7b1e6a4a3e7c2d'},
+        {id:3,name:'Ms. Leela Das',role:'Science Teacher',dept:'Science',photo:'https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=4f6a9c6a8b3d7a0c1b2c3d4e5f6a7b8c'}
+      ],
+      events: [
+        {id:1,title:'Annual Sports Day',date:'2025-12-05',type:'sports',description:'Inter-house athletics and games.',image:'https://images.unsplash.com/photo-1521412644187-c49fa049e84d?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=1a9c7d3e5b6a9c2d0e1f2a3b4c5d6e7f'},
+        {id:2,title:'Science Exhibition',date:'2025-11-20',type:'science',description:'Student projects and live demonstrations.',image:'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=5d7a1b2c3d4e5f6a7b8c9d0a1b2c3d4e'}
+      ],
+      gallery: [
+        'https://images.unsplash.com/photo-1529070538774-1843cb3265df?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=3a5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b',
+        'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=62e27b4b8e6a0d9f2f7b1e6a4a3e7c2d',
+        'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=5d7a1b2c3d4e5f6a7b8c9d0a1b2c3d4e',
+        'https://images.unsplash.com/photo-1516979187457-637abb4f9353?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=7b1a2c3d4e5f6a7b8c9d0a1b2c3d4e5f'
+      ],
+      contacts: []
+    };
+
+    function loadData(){ try{ const raw = localStorage.getItem('school_site_data'); return raw ? JSON.parse(raw) : JSON.parse(JSON.stringify(DEFAULT_DATA)); }catch(e){ console.error(e); return JSON.parse(JSON.stringify(DEFAULT_DATA)); } }
+    function saveData(d){ localStorage.setItem('school_site_data', JSON.stringify(d)); }
+
+    let DATA = loadData();
+    let facultyIndex = 0;
+    const facultyList = document.getElementById('faculty-list');
+    const prevF = document.getElementById('prev-f');
+    const nextF = document.getElementById('next-f');
+    const eventsList = document.getElementById('events-list');
+    const eventFilter = document.getElementById('event-filter');
+    const galleryGrid = document.getElementById('gallery-grid');
+    const galleryModal = document.getElementById('gallery-modal');
+    const modalImg = document.getElementById('modal-img');
+    const modalClose = document.getElementById('modal-close');
+    const contactForm = document.getElementById('contact-form');
+    const toast = document.getElementById('toast');
+    const adminToggle = document.getElementById('admin-toggle');
+    const adminSection = document.getElementById('admin');
+    const navToggle = document.getElementById('nav-toggle');
+    const navLinks = document.getElementById('nav-links');
+
+    document.getElementById('year').innerText = new Date().getFullYear();
+
+    function escapeHtml(s){ if(!s) return ''; return String(s).replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
+    function formatDate(s){ try { return new Date(s).toLocaleDateString(undefined, {day:'numeric',month:'short',year:'numeric'}); } catch(e){ return s; } }
+
+    function renderFaculty(){
+      facultyList.innerHTML = '';
+      const visible = window.innerWidth < 700 ? 1 : 3;
+      if(facultyIndex < 0) facultyIndex = 0;
+      if(facultyIndex > Math.max(0, DATA.faculty.length - visible)) facultyIndex = Math.max(0, DATA.faculty.length - visible);
+      DATA.faculty.forEach((f)=>{
+        const li = document.createElement('li');
+        li.style.flex = '0 0 auto';
+        li.className = 'faculty-card';
+        li.innerHTML = `
+          <div class="avatar"><img src="${f.photo || placeholderAvatar(f.name)}" alt="${f.name}" /></div>
+          <div style="flex:1">
+            <div style="font-weight:600">${escapeHtml(f.name)}</div>
+            <div style="font-size:13px;color:var(--muted)">${escapeHtml(f.role)} — ${escapeHtml(f.dept)}</div>
+          </div>
+        `;
+        facultyList.appendChild(li);
+      });
+      const cardWidth = facultyList.querySelector('.faculty-card')?.offsetWidth || 240;
+      facultyList.style.transform = `translateX(-${facultyIndex * (cardWidth + 12)}px)`;
+    }
+
+    function renderEvents(){
+      eventsList.innerHTML = '';
+      const filter = eventFilter.value;
+      const items = DATA.events.filter(ev => filter === 'all' ? true : ev.type === filter).sort((a,b)=> a.date > b.date ? 1 : -1);
+      items.forEach(ev=>{
+        const li = document.createElement('li');
+        li.className = 'event-card';
+        li.innerHTML = `
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <div style="width:110px;flex-shrink:0;border-radius:8px;overflow:hidden;background:#f3f4f6">
+              <img src="${ev.image || placeholderEvent()}" alt="${escapeHtml(ev.title)}" style="width:110px;height:72px;object-fit:cover">
+            </div>
+            <div style="flex:1">
+              <div style="font-weight:600">${escapeHtml(ev.title)}</div>
+              <div class="event-meta">${formatDate(ev.date)} • ${escapeHtml(ev.type)}</div>
+              <div style="margin-top:6px;color:var(--muted);font-size:14px">${escapeHtml(ev.description || '')}</div>
+            </div>
+          </div>
+        `;
+        eventsList.appendChild(li);
+      });
+    }
+
+    function renderGallery(){
+      galleryGrid.innerHTML = '';
+      DATA.gallery.forEach((src,i)=>{
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = 'Gallery ' + (i+1);
+        img.tabIndex = 0;
+        img.addEventListener('click', ()=> openModal(src));
+        galleryGrid.appendChild(img);
+      });
+    }
+
+    function renderAdmin(){
+      const fa = document.getElementById('faculty-admin-list'); fa.innerHTML = '';
+      DATA.faculty.forEach(f=>{
+        const div = document.createElement('div'); div.style.display='flex';div.style.justifyContent='space-between';div.style.gap='8px';div.style.marginTop='8px';
+        div.innerHTML = `
+          <div style="flex:1"><strong>${escapeHtml(f.name)}</strong><div class="muted">${escapeHtml(f.role)} — ${escapeHtml(f.dept)}</div></div>
+          <div style="display:flex;gap:8px">
+            <button data-id="${f.id}" class="btn" style="background:#fff;border:1px solid #eef2f6" onclick="editFaculty(${f.id})">Edit</button>
+            <button data-id="${f.id}" class="btn" style="background:#fee2e2;border:1px solid #fecaca" onclick="removeFaculty(${f.id})">Delete</button>
+          </div>
+        `;
+        fa.appendChild(div);
+      });
+      const ea = document.getElementById('events-admin-list'); ea.innerHTML = '';
+      DATA.events.forEach(ev=>{
+        const div = document.createElement('div'); div.style.display='flex';div.style.justifyContent='space-between';div.style.gap='8px';div.style.marginTop='8px';
+        div.innerHTML = `
+          <div style="flex:1"><strong>${escapeHtml(ev.title)}</strong><div class="muted">${formatDate(ev.date)} • ${escapeHtml(ev.type)}</div></div>
+          <div style="display:flex;gap:8px">
+            <button data-id="${ev.id}" class="btn" style="background:#fff;border:1px solid #eef2f6" onclick="editEvent(${ev.id})">Edit</button>
+            <button data-id="${ev.id}" class="btn" style="background:#fee2e2;border:1px solid #fecaca" onclick="removeEvent(${ev.id})">Delete</button>
+          </div>
+        `;
+        ea.appendChild(div);
+      });
+    }
+
+    function placeholderAvatar(name){ return 'https://ui-avatars.com/api/?name=' + encodeURIComponent(name) + '&background=5b21b6&color=fff&rounded=true&size=128'; }
+    function placeholderEvent(){ return 'https://images.unsplash.com/photo-1508609349937-5ec4ae374ebf?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=abcd'; }
+    function openModal(src){ modalImg.src = src; galleryModal.style.display='flex'; galleryModal.setAttribute('aria-hidden','false'); }
+    function closeModal(){ galleryModal.style.display='none'; galleryModal.setAttribute('aria-hidden','true'); modalImg.src=''; }
+    let toastTimer = null;
+    function showToast(txt,t=2500){ toast.innerText = txt; toast.style.display='block'; clearTimeout(toastTimer); toastTimer = setTimeout(()=> toast.style.display='none', t); }
+
+    contactForm.addEventListener('click', (e)=>{
+      if(e.target.id === 'contact-send'){
+        const name = document.getElementById('contact-name').value.trim();
+        const email = document.getElementById('contact-email').value.trim();
+        const subject = document.getElementById('contact-subject').value.trim();
+        const phone = document.getElementById('contact-phone').value.trim();
+        const message = document.getElementById('contact-message').value.trim();
+        if(!name || !email || !message){ showToast('Please complete the required fields'); return; }
+        const contact = {id: Date.now(), name, email, subject, phone, message, created: new Date().toISOString()};
+        DATA.contacts.push(contact); saveData(DATA); showToast('Message saved (demo uses localStorage)'); contactForm.reset(); renderAdmin();
+      }
+    });
+
+    prevF.addEventListener('click', ()=>{ facultyIndex = Math.max(0, facultyIndex - 1); renderFaculty(); });
+    nextF.addEventListener('click', ()=>{ facultyIndex = Math.min(Math.max(0, DATA.faculty.length - 1), facultyIndex + 1); renderFaculty(); });
+    eventFilter.addEventListener('change', renderEvents);
+    modalClose.addEventListener('click', closeModal);
+    galleryModal.addEventListener('click', (e)=>{ if(e.target === galleryModal) closeModal(); });
+    adminToggle.addEventListener('click', (e)=>{ e.preventDefault(); adminSection.style.display = adminSection.style.display === 'none' ? 'block' : 'none'; window.scrollTo({top: document.body.scrollHeight, behavior:'smooth'}); });
+    navToggle.addEventListener('click', ()=> navLinks.classList.toggle('show') );
+
+    document.getElementById('af-add').addEventListener('click', ()=>{
+      const name = document.getElementById('af-name').value.trim(); const role = document.getElementById('af-role').value.trim(); const dept = document.getElementById('af-dept').value.trim(); const photo = document.getElementById('af-photo').value.trim();
+      if(!name){ showToast('Faculty needs a name'); return; }
+      DATA.faculty.push({id: Date.now(), name, role, dept, photo}); saveData(DATA); document.getElementById('af-name').value='';document.getElementById('af-role').value='';document.getElementById('af-dept').value='';document.getElementById('af-photo').value=''; renderFaculty(); renderAdmin(); showToast('Faculty added');
+    });
+
+    document.getElementById('ae-add').addEventListener('click', ()=>{
+      const title = document.getElementById('ae-title').value.trim(); const date = document.getElementById('ae-date').value.trim(); const type = document.getElementById('ae-type').value; const img = document.getElementById('ae-img').value.trim();
+      if(!title || !date){ showToast('Event needs title and date'); return; }
+      DATA.events.push({id: Date.now(), title, date, type, description:'', image: img}); saveData(DATA); document.getElementById('ae-title').value='';document.getElementById('ae-date').value='';document.getElementById('ae-img').value=''; renderEvents(); renderAdmin(); showToast('Event added');
+    });
+
+    window.editFaculty = function(id){ const f = DATA.faculty.find(x=>x.id===id); if(!f) return; const name = prompt('Name', f.name); if(name === null) return; f.name = name.trim() || f.name; f.role = prompt('Role', f.role) || f.role; f.dept = prompt('Dept', f.dept) || f.dept; f.photo = prompt('Photo URL (leave blank to keep)', f.photo) || f.photo; saveData(DATA); renderFaculty(); renderAdmin(); showToast('Faculty updated'); }
+    window.removeFaculty = function(id){ if(!confirm('Delete this faculty?')) return; DATA.faculty = DATA.faculty.filter(x=>x.id!==id); saveData(DATA); renderFaculty(); renderAdmin(); showToast('Faculty deleted'); }
+    window.editEvent = function(id){ const ev = DATA.events.find(x=>x.id===id); if(!ev) return; ev.title = prompt('Title', ev.title) || ev.title; ev.date = prompt('Date (YYYY-MM-DD)', ev.date) || ev.date; ev.type = prompt('Type (sports/science/cultural)', ev.type) || ev.type; ev.image = prompt('Image URL (leave blank to keep)', ev.image) || ev.image; saveData(DATA); renderEvents(); renderAdmin(); showToast('Event updated'); }
+    window.removeEvent = function(id){ if(!confirm('Delete this event?')) return; DATA.events = DATA.events.filter(x=>x.id!==id); saveData(DATA); renderEvents(); renderAdmin(); showToast('Event deleted'); }
+
+    document.addEventListener('keydown',(e)=>{ if(e.key==='Escape') closeModal(); });
+
+    function boot(){ renderFaculty(); renderEvents(); renderGallery(); renderAdmin(); window.addEventListener('resize', ()=> setTimeout(renderFaculty,120)); document.querySelectorAll('a[href^="#"]').forEach(a=>{ a.addEventListener('click',(ev)=>{ const href=a.getAttribute('href'); if(!href||href==='#') return; const el=document.querySelector(href); if(el){ ev.preventDefault(); el.scrollIntoView({behavior:'smooth',block:'start'}); navLinks.classList.remove('show'); } }); }); }
+    boot();
+    window.__SCHOOL_DATA__ = DATA;
+  </script>
+</body>
+</html>
